@@ -17,7 +17,6 @@ def GameHeartNormalizer(replay):
     This makes a few assumptions
     1) 1v1 game
     """
-    print 'Ran GameHeartNormalizer'
 
     PRIMARY_BUILDINGS = set (['Hatchery', 'Nexus', 'CommandCenter'])
     start_frame = -1
@@ -84,24 +83,9 @@ def GameHeartNormalizer(replay):
         if team.result == 'Win':
             replay.winner = team
 
-        # print '{} {} {} {}'.format(player, player.result, player.team.number, player.team.result)
-
+    # clear observers out of the players list
     for pid in replay.player.keys():
         if not pid in actual_players:
             del replay.player[pid]
-
-    print 'First event: {}'.format(replay.events[0])
-    print 'Game length: {}'.format(replay.game_length)
-    print 'OBSERVERS'
-    for player in replay.observers:
-        print player
-    print 'PLAYERS'
-    for player in replay.players:
-        print player
-    print 'TEAMS'
-    for team in replay.teams:
-        print '{}: {}'.format(team, team.players)
-    print 'WINNER'
-    print replay.winner
 
     return replay
