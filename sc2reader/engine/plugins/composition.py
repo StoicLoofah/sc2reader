@@ -4,7 +4,8 @@ from sc2reader.engine.events import PluginExit
 
 class CompositionTracker(object):
     """
-    Generates lists of units a player has at that time
+    Generates a list of Counter (a fancy dict) for each player that stores
+    unit composition at regular intervals. This is stored as player.composition
     """
     name = 'CompositionTracker'
 
