@@ -360,6 +360,15 @@ class TestReplays(unittest.TestCase):
         self.assertEqual(replay.teams[1].players[0].name, 'LiquidTaeJa')
         self.assertEqual(replay.winner, replay.teams[0])
 
+    def test_composition_tracker_plugin(self):
+        from sc2reader.engine.plugins import CompositionTracker
+        sc2reader.engine.register_plugin(CompositionTracker())
+
+        replay = sc2reader.load_replay('test_replays/composition/composition.SC2Replay')
+
+        self.assertTrue(replay.players[0].compositions)
+        self.assertEqual(replay.players[0].compositions[20]['Reaper'], 1)
+
     def test_replay_event_order(self):
         replay = sc2reader.load_replay("test_replays/event_order.SC2Replay")
 
