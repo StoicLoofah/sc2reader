@@ -33,15 +33,16 @@ class CompositionTracker(object):
         for player in replay.players:
             unit_ranges = self.get_unit_ranges(player, replay.frames)
 
-            player.compositions = [Counter() for i in range(replay.frames / self.frame_interval + 1)]
+            player.compositions = [Counter() for i in
+                    range(replay.frames // self.frame_interval + 1)]
             num_compositions = len(player.compositions)
 
             for name, start, end in unit_ranges:
                 # if you are born on the frame exactly, you count. else, round up
                 # if you die on the frame, you don't count. else, starting cutting it off
-                start_index = (start - 1) / self.frame_interval + 1
-                end_index = ((end - 1) / self.frame_interval + 1) if self.remove_on_death else \
-                        num_compositions
+                start_index = (start - 1) // self.frame_interval + 1
+                end_index = ((end - 1) // self.frame_interval + 1) if self.remove_on_death \
+                        else num_compositions
                 for index in range(start_index, end_index):
                     player.compositions[index][name] += 1
 
@@ -51,10 +52,10 @@ class CompositionTracker(object):
         """
         for player in replay.players:
             for i, composition in enumerate(player.compositions):
-                print i * self.frame_interval / 16
-                print composition
-                for unit, count in composition.iteritems():
-                    print '    {}\t\t{}'.format(unit, count)
+                print(i * self.frame_interval / 16)
+                print(composition)
+                for unit, count in composition.items():
+                    print('    {}\t\t{}'.format(unit, count))
 
     def get_unit_ranges(self, player, frames):
         """
