@@ -115,10 +115,12 @@ class InitDataReader(object):
                     licenses=[data.read_uint32() for i in range(data.read_bits(9))] if replay.base_build >= 19132 else [],
                     tandem_leader_user_id=data.read_bits(4) if replay.base_build >= 34784 and data.read_bool() else None,
                     commander=data.read_aligned_bytes(data.read_bits(9)) if replay.base_build >= 34784 else None,
+                    commander_level=data.read_uint32() if replay.base_build >= 36442 else None,
                 ) for i in range(data.read_bits(5))],
                 random_seed=data.read_uint32(),
                 host_user_id=data.read_bits(4) if data.read_bool() else None,
                 is_single_player=data.read_bool(),
+                picked_map_tag=data.read_uint8() if replay.base_build >= 36442 else None,
                 game_duration=data.read_uint32(),
                 default_difficulty=data.read_bits(6),
                 default_ai_build=data.read_bits(7) if replay.base_build >= 24764 else None,
@@ -1704,6 +1706,21 @@ class GameEventsReader_34784(GameEventsReader_27950):
     def game_user_leave_event(self, data):
         return dict(
             leave_reason=data.read_bits(4)
+        )
+
+
+class GameEventsReader_36442(GameEventsReader_34784):
+
+    def control_group_update_event(self, data):
+        return dict(
+            control_group_index=data.read_bits(4),
+            control_group_update=data.read_bits(3),
+            remove_mask={  # Choice
+                0: lambda: ('None', None),
+                1: lambda: ('Mask', self.read_selection_bitmask(data, data.read_bits(9))),
+                2: lambda: ('OneIndices', [data.read_bits(9) for i in range(data.read_bits(9))]),
+                3: lambda: ('ZeroIndices', [data.read_bits(9) for i in range(data.read_bits(9))]),
+            }[data.read_bits(2)](),
         )
 
 
