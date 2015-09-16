@@ -372,7 +372,20 @@ class TestReplays(unittest.TestCase):
 
     def test_214(self):
       replay = sc2reader.load_replay("test_replays/2.1.4/Catallena LE.SC2Replay", load_level=4)
-    
+
+    def test_lotv1(self):
+      # This test currently passes, but there are a lot of warning messages about missing abilities and unit types; presumably this is because the datapack for LotV is missing lots of stuff
+      replay = sc2reader.load_replay("test_replays/lotv/lotv1.SC2Replay")
+      self.assertEqual(replay.expansion, "LotV")
+
+    def test_lotv_map(self):
+      # This test currently fails in decoders.py with 'TypeError: ord() expected a character, but string of length 0 found'        
+      for replayfilename in [
+        "test_replays/lotv/lotv1.SC2Replay",
+        ]:
+        factory = sc2reader.factories.SC2Factory()
+        replay =factory.load_replay(replayfilename,load_level=1,load_map= True)
+
 
 class TestGameEngine(unittest.TestCase):
     class TestEvent(object):
