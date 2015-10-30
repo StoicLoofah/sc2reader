@@ -1213,14 +1213,6 @@ class GameEventsReader_22612(GameEventsReader_21029):
                 y=data.read_uint32()-2147483648,
             ),
             unit_tag=data.read_uint32(),
-            unit_link=data.read_uint16() if replay.build >= 38749 else None,
-            unit_control_player_id=(data.read_bits(4) if data.read_bool() else None) if replay.build >= 38749 else None,
-            unit_upkeep_player_id=(data.read_bits(4) if data.read_bool() else None) if replay.build >= 38749 else None,
-            unit_position=dict(
-                    x=data.read_bits(20),
-                    y=data.read_bits(20),
-                    z=data.read_bits(32) - 2147483648,
-                ) if replay.build >= 38749 else None,
             pinged_minimap=data.read_bool(),
         )
 
@@ -1774,7 +1766,47 @@ class GameEventsReader_38215(GameEventsReader_36442):
             other_unit_tag=data.read_uint32() if data.read_bool() else None,
             unit_group=data.read_uint32() if data.read_bool() else None,
         )
-    
+
+    def user_options_event(self, data):
+        # only change: removes starting_rally
+        return dict(
+            game_fully_downloaded=data.read_bool(),
+            development_cheats_enabled=data.read_bool(),
+            test_cheats_enabled=data.read_bool(),
+            multiplayer_cheats_enabled=data.read_bool(),
+            sync_checksumming_enabled=data.read_bool(),
+            is_map_to_map_transition=data.read_bool(),
+            debug_pause_enabled=data.read_bool(),
+            use_galaxy_asserts=data.read_bool(),
+            platform_mac=data.read_bool(),
+            camera_follow=data.read_bool(),
+            base_build_num=data.read_uint32(),
+            build_num=data.read_uint32(),
+            version_flags=data.read_uint32(),
+            hotkey_profile=data.read_aligned_string(data.read_bits(9)),
+            use_ai_beacons=None,
+        )
+
+class GameEventsReader_38749(GameEventsReader_38215):
+
+    def trigger_ping_event(self, data):
+        return dict(
+            point=dict(
+                x=data.read_uint32() - 2147483648,
+                y=data.read_uint32() - 2147483648,
+            ),
+            unit_tag=data.read_uint32(),
+            unit_link=data.read_uint16(),
+            unit_control_player_id=(data.read_bits(4) if data.read_bool() else None),
+            unit_upkeep_player_id=(data.read_bits(4) if data.read_bool() else None),
+            unit_position=dict(
+                    x=data.read_bits(20),
+                    y=data.read_bits(20),
+                    z=data.read_bits(32) - 2147483648,
+                ),
+            pinged_minimap=data.read_bool(),
+            option=data.read_uint32() - 2147483648,
+        )
 
 class TrackerEventsReader(object):
 
