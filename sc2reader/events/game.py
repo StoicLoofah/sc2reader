@@ -93,7 +93,7 @@ class UserOptionsEvent(GameEvent):
         self.use_ai_beacons = data['use_ai_beacons']
 
         #: Are workers sent to auto-mine on game start
-        self.starting_rally = data['starting_rally']
+        self.starting_rally = data.get('starting_rally', 1)  # missing around build 38749. Assume true
 
         #:
         self.debug_pause_enabled = data['debug_pause_enabled']
