@@ -410,8 +410,10 @@ def create_control_group_event(frame, pid, data):
     elif update_type == 2:
         return GetControlGroupEvent(frame, pid, data)
     elif update_type == 3:
-        # TODO: What could this be?!?
         return ControlGroupEvent(frame, pid, data)
+    else:
+        # No idea what this is but we're seeing update_types of 4 and 5 in 3.0
+        return HotkeyEvent(frame, pid, data)
 
 
 @loggable
