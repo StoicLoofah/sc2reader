@@ -379,7 +379,7 @@ class TestReplays(unittest.TestCase):
       self.assertEqual(replay.expansion, "LotV")
 
     def test_lotv_map(self):
-      # This test currently fails in decoders.py with 'TypeError: ord() expected a character, but string of length 0 found'        
+      # This test currently fails in decoders.py with 'TypeError: ord() expected a character, but string of length 0 found'
       for replayfilename in [
         "test_replays/lotv/lotv1.SC2Replay",
         ]:
@@ -388,6 +388,12 @@ class TestReplays(unittest.TestCase):
 
     def test_30(self):
       replay = sc2reader.load_replay("test_replays/3.0.0.38215/first.SC2Replay")
+
+    def test_38996(self):
+        replay = sc2reader.load_replay("test_replays/3.0.0.38996/1.SC2Replay")
+        self.assertEqual(replay.expansion, 'LotV')
+        replay = sc2reader.load_replay("test_replays/3.0.0.38996/2.SC2Replay")
+        self.assertEqual(replay.expansion, 'LotV')
 
 
 class TestGameEngine(unittest.TestCase):
