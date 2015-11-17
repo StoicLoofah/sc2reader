@@ -413,7 +413,8 @@ def create_control_group_event(frame, pid, data):
         return ControlGroupEvent(frame, pid, data)
     else:
         # No idea what this is but we're seeing update_types of 4 and 5 in 3.0
-        return HotkeyEvent(frame, pid, data)
+        # diverging from ggtracker/sc2reader because I do not have this type
+        return ControlGroupEvent(frame, pid, data)
 
 
 @loggable
