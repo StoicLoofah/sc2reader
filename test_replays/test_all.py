@@ -389,6 +389,11 @@ class TestReplays(unittest.TestCase):
     def test_30(self):
       replay = sc2reader.load_replay("test_replays/3.0.0.38215/first.SC2Replay")
 
+    def test_31(self):
+      for i in range(1,5):
+          print "DOING {}".format(i)
+          replay = sc2reader.load_replay("test_replays/3.1.0/{}.SC2Replay".format(i))
+
     def test_38996(self):
         replay = sc2reader.load_replay("test_replays/3.0.0.38996/1.SC2Replay")
         self.assertEqual(replay.expansion, 'LotV')
