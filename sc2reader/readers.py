@@ -1831,6 +1831,14 @@ class GameEventsReader_38996(GameEventsReader_38749):
             option=data.read_uint32() - 2147483648,
         )
 
+
+class GameEventsReader_41743(GameEventsReader_38996):
+    def decrement_game_time_remaining_event(self, data):
+        return dict(
+                decrement_ms=data.read_bits(32)
+                )
+
+
 class TrackerEventsReader(object):
 
     def __init__(self):
